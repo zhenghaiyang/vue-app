@@ -54,7 +54,7 @@ export default {
         addUser(this.addForm).then((res)=>{
           this.$vux.alert.show({
               title: '添加成功',
-              content: '成功成功成功'
+              content: '操作成功'
           })
           this.addForm={
                   userName:"",

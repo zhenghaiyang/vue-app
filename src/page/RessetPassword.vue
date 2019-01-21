@@ -25,6 +25,7 @@
 import {XInput,Group,XButton} from 'vux';
 import {userResetPassword} from '@/api/index';
 import {removeStore,getStore} from '@/lib/pAxios';
+import md5 from 'md5';
 export default {
   components:{
     XInput,
@@ -57,7 +58,7 @@ export default {
     },
     // 校验新密码
     checkNewPassword(){
-      let reg = new RegExp('^(?!([a-zA-Z]+|\d+)$)[a-zA-Z\d]{6,13}$')
+      let reg = new RegExp("^(?!([a-zA-Z]+|\\d+)$)[a-zA-Z\\d]{6,13}$")
       if(!reg.test(this.searchForm.password)){
         this.$vux.alert.show({
             title: '警告',
@@ -82,14 +83,19 @@ export default {
           let params ={
             id:this.userInfo.id,
             userCode:this.userInfo.userCode,
-            userPassword:this.searchForm.old,
-            newUserPassword:this.searchForm.newPassword
+            userPassword:md5(this.searchForm.old),
+            newUserPassword:md5(this.searchForm.newPassword)
           }
           userResetPassword(params).then((res)=>{
             this.$vux.alert.show({
                 title: '成功',
                 content: '操作成功'
             })
+            this.searchForm={
+                  old:"",
+                  password:"",
+                  newPassword:"",
+              }
           })
         }
       }

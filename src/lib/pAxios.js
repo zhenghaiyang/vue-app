@@ -4,7 +4,10 @@ import Router from 'vue-router'
 import {AlertModule } from 'vux'
 
 // 统一请求路径前缀
-const base ="http://192.168.31.102:8086/"
+// 部署的路径
+const base ="/"
+// 开发的路径
+// const base ="http://localhost:8086/"
 // 超时设定
 axios.defaults.timeout = 15000;
 axios.interceptors.request.use((config) => {

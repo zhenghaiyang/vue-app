@@ -5,6 +5,7 @@ import FastClick from 'fastclick'
 import VueRouter from 'vue-router'
 import routes from './router/index.js';
 import App from './App'
+import VCharts from 'v-charts'
 import { ConfirmPlugin,LoadingPlugin,AlertPlugin,ToastPlugin } from 'vux'
 
 
@@ -12,7 +13,7 @@ Vue.use(AlertPlugin)
 Vue.use(ConfirmPlugin)
 Vue.use(ToastPlugin)
 Vue.use(LoadingPlugin)
-
+Vue.use(VCharts)
 Vue.use(VueRouter)
 // 3. 创建 router 实例，然后传 `routes` 配置
 const router = new VueRouter({

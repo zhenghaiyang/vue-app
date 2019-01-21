@@ -3,7 +3,7 @@
     <tabbar class="vux-demo-tabbar" icon-class="vux-center">
       <tabbar-item link="/newsList">
         <img slot="icon" src="">
-        <span slot="label">微应用</span>
+        <span slot="label">主页</span>
       </tabbar-item>
       <tabbar-item link="/home" selected>
         <img slot="icon" src="">
@@ -12,7 +12,7 @@
       </tabbar-item>
       <tabbar-item @on-item-click="showScrollBox =!showScrollBox">
         <img slot="icon" src="">
-        <span slot="label">转化角色</span>
+        <span slot="label">个人中心</span>
       </tabbar-item>
     </tabbar>
   </div>

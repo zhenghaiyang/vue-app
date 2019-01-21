@@ -22,6 +22,7 @@
 <script type="text/ecmascript-6">
 import {  XDialog, XInput, Group, XButton, XHeader } from 'vux'
 import {login} from '@/api/index.js';
+import md5 from 'md5';
 import {setStore} from '@/lib/pAxios.js';
 export default {
     components: {
@@ -52,12 +53,17 @@ export default {
           })
           return
         }else{
+          this.loginForm.userPassword = md5(this.loginForm.userPassword);
           login(this.loginForm).then((res)=>{
             let code = res.code
             if(code==200) {
               setStore("menuList",this.data2tree(res.data.menulist))
               setStore("userInfo",res.data.userInfo)
               this.$router.push("/manage/home")
+            }
+          }).finally(()=>{
+            this.loginForm={
+              userPassword:""
             }
           })
         }

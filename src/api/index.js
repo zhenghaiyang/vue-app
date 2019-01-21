@@ -56,3 +56,9 @@ export const addUser = (params)=>{
 export const delUser = (params)=>{
   return postRequest("user/del",params);
 }
+
+
+// 统计个人上班加班天数
+export const detalisByUser  = (params)=>{
+  return postRequest("project/userDetils",params);
+}

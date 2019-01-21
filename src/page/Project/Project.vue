@@ -6,12 +6,20 @@
        <card :header="{title: '项目简况' }">
         <div slot="content" class="card-padding">
           <div>
-            <span>项目开始时间</span>
-            <span>{{renderDate(item.startTime)}}</span>
-          </div>
-          <div>
             <span>项目创建时间</span>
             <span>{{renderDate(item.createdTime)}}</span>
+          </div>
+          <div>
+            <span>项目开始时间</span>
+            <span>{{item.startTime && renderDate(item.startTime)}}</span>
+          </div>
+          <div>
+            <span>项目结束时间</span>
+            <span>{{item.endTime && renderDate(item.endTime)}}</span>
+          </div>
+          <div>
+            <span>项目负责人</span>
+            <span>{{item.projectManage && item.projectManage}}</span>
           </div>
         </div>
         <div slot="footer">
@@ -29,7 +37,7 @@
                   <tr>
                     <th>姓名</th>
                     <th>职位</th>
-                    <th>所在时间</th>
+                    <th>总时长</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -41,7 +49,7 @@
                     {{item.positionName}}
                     </td>
                     <td>
-                      {{item.timeName}}
+                      {{`${item.allTime}天`}}
                     </td>
                   </tr>
                 </tbody>

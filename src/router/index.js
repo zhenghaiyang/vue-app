@@ -7,7 +7,7 @@ import ProjectImport from '@/page/ProjectImport/ProjectImport';
 import AddProject from '@/page/Project/AddProject';
 import AddUser from '@/page/User/AddUser';
 import RessetPassword from '@/page/RessetPassword';
-
+import UserDetils from '@/page/Detils/UserDetils/UserDetils';
 const routes=[
       {path: '/login', component: Login },
       {path: '/', redirect: "/login" },//重定向
@@ -18,11 +18,12 @@ const routes=[
           {path:"/project",name:"项目管理",component: Project,meta:{requireMenue:true}},
           {path:"/addProject",name:"创建项目",component: AddProject,meta:{requireMenue:false}},
           {path:"/projectImport",name:"项目录入",component: ProjectImport,meta:{requireMenue:false}},
+          {path:"/userDetils",name:"个人项目统计",component: UserDetils,meta:{requireMenue:false}},
           {path:"/addUser",name:"添加用户",component: AddUser,meta:{requireMenue:false}},
           {path:"/resetPassword",name:"修改密码",component: RessetPassword,meta:{requireMenue:false}}
         ]
       },
-      
+
 
 ];
 

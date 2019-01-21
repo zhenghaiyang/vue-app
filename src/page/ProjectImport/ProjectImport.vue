@@ -1,7 +1,11 @@
 <template>
   <div class="projectImport">
-    <group title="项目录入人">
-      <x-input title="项目录入人" :value="userInfo.username" disabled></x-input>
+    <group title="项目录入基本信息">
+      <x-input title="项目录入人" :value="userInfo.userinfoMessage.username" disabled></x-input>
+      <datetime title="录入时间" v-model="userInfo.selectTime" required value-text-align="center" ref="projectStartTime" :end-date="userInfo.selectTime"></datetime>
+      <group title="工作日期类型">
+        <radio title="工作时间" :options="options" v-model="userInfo.selectRadio" ></radio>
+      </group>
     </group>
     <group v-for="(item,index) in projectList" :title="renderTitle(index)" :key="index">
       <selector title="选择项目" :options="allProjectList" v-model="item.projectId" placeholder="必填的"></selector>
@@ -18,30 +22,45 @@
 
 <script>
 import {getTimeList,getAllPosition,getAllProject,importProject} from '@/api/index.js';
-import {Group,XInput,Selector,XButton} from 'vux';
+import {Group,XInput,Selector,XButton,Datetime,Radio } from 'vux';
 import {getStore} from '@/lib/pAxios.js';
 export default {
   components:{
     Group,
     XInput,
     Selector,
-    XButton
+    XButton,
+    Datetime,
+    Radio
   },
   name: 'ProjectImport',
   data () {
     return {
+      options:[
+        {
+          key:"1",
+          value:"工作日"
+        },{
+          key:"2",
+          value:"加班"
+        }
+      ],
       timeList:[],
       positionList:[],
       allProjectList:[],
       projectUser:"",
-      userInfo:JSON.parse(getStore("userInfo")),
+      userInfo:{
+        userinfoMessage:JSON.parse(getStore("userInfo")),
+        selectTime:new Date().format('yyyy-MM-dd'),
+        selectRadio:"1"
+      },
       projectList:[
         {
           userTime:"",
           projectId:"",
           userPosition:""
         }
-      ]
+      ],
     }
   },
   methods:{
@@ -88,22 +107,24 @@ export default {
           return;
         }
         let sumTime = this.checkSelectTime(this.projectList)
-        if(sumTime >1 ) {
+        if(sumTime !=1 ) {
           this.$vux.alert.show({
               title: '警告',
-              content: "项目时间之和不能大于1"
+              content: "项目时间之和必须等于1"
           })
           return;
         }
       }else{
         this.$vux.alert.show({
             title: '警告',
-            content: `请检查 支持项目--${returnObj.index+1} 的必填项`
+            content: `请检查 项目--${returnObj.index+1} 的必填项`
         })
         return;
       }
       for(let i=0;i<this.projectList.length;i++) {
-        this.projectList[i]['userId']=this.userInfo.userId
+        this.projectList[i]['userId']=this.userInfo.userinfoMessage.userId
+        this.projectList[i]['importProjectTime']=this.userInfo.selectTime
+        this.projectList[i]['workType']=this.userInfo.selectRadio
       }
       importProject(this.projectList).then((res)=>{
         this.$vux.alert.show({
@@ -133,7 +154,7 @@ export default {
       })
       return flag
     },
-    // 判断时间是否大于1
+    // 判断时间是否等于1
     checkSelectTime(dataList) {
         var sum=0
         dataList.forEach(function(item){
@@ -169,7 +190,7 @@ export default {
       ]
     },
     renderTitle(index) {
-      return "支持的项目--"+(index+1)
+      return "项目--"+(index+1)
     },
     // 添加项目
     addProject() {
