@@ -2,8 +2,12 @@
   <div>
     <group title="创建项目" label-width="7em" label-margin-right="2em" label-align="justify">
       <x-input title="项目名称" v-model.trim="addForm.projectName" ref="projectName" required></x-input>
-      <datetime title="项目开始时间" v-model="addForm.projectStartTime" required value-text-align="left" ref="projectStartTime"></datetime>
-      <datetime title="项目结束时间" v-model="addForm.projectEndtTime" required value-text-align="left" ref="projectEndtTime"></datetime>
+      <datetime title="项目开始时间" v-model="addForm.projectStartTime" required value-text-align="left" ref="projectStartTime" :end-date="endDate"></datetime>
+      <datetime title="预计结束时间"
+      v-model="addForm.projectEndtTime"
+      :readonly="addForm.projectStartTime?false:true"
+      required
+      value-text-align="left" ref="projectEndtTime" :start-date="addForm.projectStartTime"></datetime>
       <selector title="项目负责人" :options="userManage" v-model="addForm.projectManage" placeholder="必填的"></selector>
     </group>
     <div style="padding:15px;">
@@ -32,7 +36,8 @@ export default {
         projectEndtTime:"",
         projectManage:""
       },
-      userManage:[]
+      userManage:[],
+      endDate:new Date().format("yyyy-MM-dd")
     }
   },
   methods:{

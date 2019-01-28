@@ -14,8 +14,12 @@
             <span>{{item.startTime && renderDate(item.startTime)}}</span>
           </div>
           <div>
-            <span>项目结束时间</span>
+            <span>预计项目结束时间</span>
             <span>{{item.endTime && renderDate(item.endTime)}}</span>
+          </div>
+          <div>
+            <span>项目真实结束时间</span>
+            <span>{{item.trueEndTime && renderDate(item.trueEndTime)}}</span>
           </div>
           <div>
             <span>项目负责人</span>
@@ -24,8 +28,23 @@
         </div>
         <div slot="footer">
           <span class="clickMore" @click="()=>clickMore(item.id)">点击查看更多</span>
+          <span class="clickMore" @click="()=>closeProject(item.id)" v-if="!item.trueEndTime">结束项目</span>
         </div>
       </card>
+    </div>
+    <div v-transfer-dom>
+      <x-dialog :show="claseDialog">
+        <p class="dialog-title">选择结束时间</p>
+        <div class="dialog-content">
+            <datetime title="项目结束时间" v-model="trueEndTime" value-text-align="left" ref="trueEndTime"></datetime>
+        </div>
+        <div @click="claseDialog=false" style="text-align:end" class="dialogFoot">
+          <span class="vux-close">关闭</span>
+        </div>
+        <div @click="handleClose" style="text-align:end" class="dialogFoot">
+          <span class="vux-close">确定</span>
+        </div>
+      </x-dialog>
     </div>
     <div v-transfer-dom>
         <x-dialog :show="moreDialog">
@@ -65,8 +84,8 @@
 </template>
 
 <script>
-import { getAllProject,delProject,getAllUserByPId } from '@/api/index.js'
-import {Divider,Card,XButton,XDialog,TransferDomDirective as TransferDom,XSwitch,XTable } from 'vux';
+import { getAllProject,delProject,getAllUserByPId,closeProject } from '@/api/index.js'
+import {Divider,Card,XButton,XDialog,TransferDomDirective as TransferDom,XSwitch,XTable,Datetime } from 'vux';
 export default {
   directives: {
    TransferDom
@@ -77,17 +96,47 @@ export default {
     XButton,
     XDialog,
     XSwitch,
-    XTable
+    XTable,
+    Datetime
   },
   name: 'Project',
   data () {
     return {
+      claseDialog:false,
       projectList:[],
       moreDialog:false,
       userList:[],
+      selectProjectID:"",
+      trueEndTime:new Date().format('yyyy-MM-dd')
     }
   },
   methods:{
+    // 结束项目
+    closeProject(id) {
+      this.claseDialog=true
+      this.selectProjectID=id
+    },
+    // 结束项目
+    handleClose() {
+      const that=this
+      let params={
+        id:this.selectProjectID,
+        trueEndTime:this.trueEndTime
+      }
+      console.log('params',params)
+      closeProject(params).then((res)=>{
+        let code = res.code
+        if(code==200){
+          that.claseDialog=false
+          that.$vux.alert.show({
+              title: '提示',
+              content: res.msg
+          })
+          that.getAllProjectFN();
+        }
+
+      })
+    },
     // 格式化时间
     renderDate(value){
       return new Date(value).format("yyyy-MM-dd")
@@ -171,6 +220,10 @@ export default {
   display: inline-block;
   color: red;
   margin-left: 5px;
+  cursor: pointer;
+}
+.dialogFoot {
+  display: inline-block;
   cursor: pointer;
 }
 </style>

@@ -2,12 +2,11 @@ import axios from 'axios';
 import Router from 'vue-router'
 // import {message} from 'iview';
 import {AlertModule } from 'vux'
+import globalConfig from '@/lib/globalConfig.js';
 
-// 统一请求路径前缀
-// 部署的路径
-const base ="/"
-// 开发的路径
-// const base ="http://localhost:8086/"
+console.log("globalConfig",globalConfig)
+
+const base =globalConfig.apiUrl;
 // 超时设定
 axios.defaults.timeout = 15000;
 axios.interceptors.request.use((config) => {

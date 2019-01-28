@@ -56,9 +56,19 @@ export const addUser = (params)=>{
 export const delUser = (params)=>{
   return postRequest("user/del",params);
 }
-
-
 // 统计个人上班加班天数
 export const detalisByUser  = (params)=>{
   return postRequest("project/userDetils",params);
+}
+// 根据项目名称和时间范围查询
+export const getAllProjectByParams = (params)=>{
+  return postRequest("project/allByParams",params);
+}
+// 关闭项目
+export const closeProject=(params)=>{
+  return postRequest("project/closeProject",params);
+}
+// 导出项目
+export const exportProjectDetail=(params)=>{
+  return getRequest("export/exportTest",params)
 }
